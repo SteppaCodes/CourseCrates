@@ -50,6 +50,8 @@ THIRD_PARTY_APPS= [
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
+AUTH_USER_MODEL = 'accounts.user'
+
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',

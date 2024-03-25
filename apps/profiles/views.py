@@ -31,7 +31,7 @@ class CompleteProfileView(APIView):
         school = school_dict.get('school')
         level = serializer.validated_data['level']
 
-        serializer.save(school=school, level=level, profile_complete=True)
+        serializer.save(school=school, level=level, is_profile_complete=True)
 
         return Response(serializer.data)
 

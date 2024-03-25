@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_decode
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 #local imports
 from .serializers import (RegisterSerializer, 
                           VerifyOtpSerializer, ResendOtpSerializer,
@@ -25,7 +25,9 @@ class RegisterUserView(APIView):
     @extend_schema(
             summary = "Register user",
             description="This endpoint creates a new user",
-            tags=tags
+            tags=tags,
+            request=RegisterSerializer,
+            responses={"201": RegisterSerializer},
     )
     def post(self, request):
         data = request.data
@@ -46,7 +48,9 @@ class VerifyEmail(APIView):
     @extend_schema(
             summary = "Verify Email",
             description="This endpoint verifies a user's email",
-            tags=tags
+            tags=tags,
+            request=VerifyOtpSerializer,
+            responses={"200": VerifyOtpSerializer},
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -84,7 +88,9 @@ class ResendEmail(APIView):
     @extend_schema(
             summary = "Resend verification Email",
             description="This endpoint resends verification email",
-            tags=tags
+            tags=tags,
+            request=ResendOtpSerializer,
+            responses={"200": ResendOtpSerializer},
     )
     def post(self, request): 
  
@@ -113,7 +119,19 @@ class LoginView(APIView):
     @extend_schema(
             summary = "Login a user",
             description="This endpoint logs in a user",
-            tags=tags
+            tags=tags,
+            request=LoginSerializer,
+            responses={"200": LoginSerializer},
+            examples=[
+            OpenApiExample(
+                name="Login User example",
+                value={
+                    "email": "steppaapitestuser@gmail.com",
+                    "password": "testuser",
+                },
+                description="Example request for authenticating a user",
+            )
+        ],
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -128,7 +146,9 @@ class ResetPasswordRequestView(APIView):
     @extend_schema(
             summary = "Request to Reset a user's password",
             description="This endpoint sends a reset password email with link to reset password",
-            tags=tags
+            tags=tags, 
+            request=ResetPasswordSerializer,
+            responses={"200": ResetPasswordSerializer},
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)

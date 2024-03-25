@@ -30,7 +30,7 @@ class SchoolsListView(APIView):
     @extend_schema(
             tags=tags,
             summary='List all schools',
-            description="This endpoint lists all schools"
+            description="This endpoint lists all schools",
     )
     def get(self, request):
         query = request.GET.get("query")

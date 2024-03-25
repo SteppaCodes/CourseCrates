@@ -11,6 +11,6 @@ urlpatterns = [
     path("api/", include("apps.accounts.urls")),
     path("api/", include("apps.profiles.urls")),
     # path("api/", include("apps.course_materials.urls")),
-    # path("api/", include("apps.crates.urls")),
+    path("api/", include("apps.crates.urls")),
     path("api/", include("apps.schools.urls")),
 ]

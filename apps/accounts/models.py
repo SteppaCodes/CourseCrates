@@ -7,6 +7,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from autoslug import AutoSlugField
 
 from .managers import CustomUserManager
+from apps.schools.models import School
+
+
+LEVEL_CHOICES = (
+    ('100', '100'),('200', '200'), ('300', '300'),
+    ('400', '400'), ('500', '500'), ('Other', 'Other')
+)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -16,6 +23,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name =  models.CharField(max_length=70)
     email = models.EmailField(_('Email Address'), unique=True)
     avatar= models.ImageField(upload_to='avatars/', null=True, blank=True)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    level = models.CharField(max_length=200, choices=LEVEL_CHOICES, null=True)
+
     is_profile_complete = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

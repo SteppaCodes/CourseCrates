@@ -52,6 +52,61 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 AUTH_USER_MODEL = 'accounts.user'
 
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'NON_FIELD_ERROR_KEYS': 'error',
+    
+    # 'EXCEPTION_HANDLER':'utils.exception_handler.custom_exception_handler',
+
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "CourseCrates API",
+    "DESCRIPTION": """
+    CourseCrate's API. 
+    For testing using existing, login with the following credentials:
+
+    email: steppaapitestuser@gmail.com
+    password: testuser
+    or 
+    create your own account :)
+    """,
+    "VERSION": "1.0.0",
+    "SECURITY": [
+        {
+            "bearerAuth": [],
+        }
+    ],
+    "TAGS": [
+       {"name": "Auth", "description": "Authentication Endpoints"},
+    #     {"name": "Contacts", "description": "contacts CRUD endpoints"},
+    #     {"name": "Favourites", "description": "Favourites CRUD endpoints"},
+    #     {"name": "Groups", "description": "Groups CRUD endpoints"},
+    ],
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_SSL = config("EMAIL_USE_SSL")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+
+
+
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',

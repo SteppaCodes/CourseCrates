@@ -1,0 +1,408 @@
+openapi: 3.0.3
+info:
+  title: CourseCrates API
+  version: 1.0.0
+  description: "\n    CourseCrate's API. \n    For testing using existing, login with\
+    \ the following credentials:\n\n    email: steppaapitestuser@gmail.com\n    password:\
+    \ testuser\n    or \n    create your own account :)\n    "
+paths:
+  /api/login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/logout/:
+    post:
+      operationId: logout_create
+      tags:
+      - logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Logout'
+          description: ''
+  /api/register/:
+    post:
+      operationId: register_create
+      description: This endpoint creates a new user
+      summary: Register user
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/resend-email/:
+    post:
+      operationId: resend_email_create
+      tags:
+      - resend-email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendOtp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendOtp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendOtp'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendOtp'
+          description: ''
+  /api/reset-password-confirm/{uidb64}/{token}/:
+    get:
+      operationId: reset_password_confirm_retrieve
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - reset-password-confirm
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/reset-password-request/:
+    post:
+      operationId: reset_password_request_create
+      tags:
+      - reset-password-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetPassword'
+          description: ''
+  /api/set-new-password/:
+    patch:
+      operationId: set_new_password_partial_update
+      tags:
+      - set-new-password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNewPassword'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/verify-email/:
+    post:
+      operationId: verify_email_create
+      tags:
+      - verify-email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOtp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyOtp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyOtp'
+        required: true
+      security:
+      - jwtAuth: []
+      - bearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyOtp'
+          description: ''
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        access_token:
+          type: string
+          readOnly: true
+        refresh_token:
+          type: string
+          readOnly: true
+      required:
+      - access_token
+      - email
+      - full_name
+      - password
+      - refresh_token
+    Logout:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required:
+      - refresh_token
+    PatchedSetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        token:
+          type: string
+          writeOnly: true
+        uidb64:
+          type: string
+          writeOnly: true
+    Register:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          title: Email Address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        password2:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        terms_agreement:
+          type: boolean
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      - password2
+    ResendOtp:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    ResetPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    SetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 30
+          minLength: 8
+        token:
+          type: string
+          writeOnly: true
+        uidb64:
+          type: string
+          writeOnly: true
+      required:
+      - confirm_password
+      - password
+      - token
+      - uidb64
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    VerifyOtp:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        otp:
+          type: integer
+      required:
+      - email
+      - otp
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -16,6 +16,7 @@ inflection==0.5.1
 jsonschema==4.21.1
 jsonschema-specifications==2023.12.1
 pillow==10.2.0
+psycopg2-binary==2.9.9
 PyJWT==2.8.0
 python-decouple==3.8
 pytz==2023.3.post1

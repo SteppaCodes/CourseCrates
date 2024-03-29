@@ -45,7 +45,8 @@ THIRD_PARTY_APPS= [
     'whitenoise',
     'debug_toolbar',
     "rest_framework",
-    "drf_spectacular"
+    "drf_spectacular",
+    "gdstorage"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -94,10 +95,15 @@ SPECTACULAR_SETTINGS = {
        {"name": "Accounts Settings", "description": "Profile and accounts operations endpoints"},
        {"name": "Accounts Settings", "description": "Profile and accounts operations endpoints"},
        {"name": "Crates", "description": "Crate CRUD dnpoints"},
-    #     {"name": "Favourites", "description": "Favourites CRUD endpoints"},
+       {"name": "Course Materials", "description": "Course CRUD endpoints"},
     #     {"name": "Groups", "description": "Groups CRUD endpoints"},
     ],
 }
+
+# Google Drive settings
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE=None
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS=(config("GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS"))
+
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST")
@@ -107,7 +113,10 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = config("EMAIL_USE_SSL")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
-
+SITE_ID = 1
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

@@ -8,6 +8,7 @@ from autoslug import AutoSlugField
 
 from .managers import CustomUserManager
 from apps.schools.models import School
+from apps.common.models import BaseModel
 
 
 LEVEL_CHOICES = (
@@ -60,3 +61,8 @@ class OneTimePassword(models.Model):
 
     def __str__(self):
         return self.code
+
+
+# class GuestUser(BaseModel):
+#     sesson_key = models.CharField(max_length=159)
+

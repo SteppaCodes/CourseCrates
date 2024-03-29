@@ -25,6 +25,7 @@ class CratesListCreateView(APIView, PageNumberPagination):
         tags=tags
     )
     def get(self, request):
+        # crates = Crate.objects.filter(school=request.user.school)
         crates = Crate.objects.all()
         
         self.page_size = 20

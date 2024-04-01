@@ -8,7 +8,7 @@ class IsProfileComplete(BasePermission):
         #authorized users that have completed their profile
         user = request.user
         if user.is_authenticated and not user.is_profile_complete:
-            raise PermissionDenied(detail="Please complete your account setup to gain full access")
+            raise PermissionDenied(detail="Please complete your profile setup")
         return True
 
     def has_object_permission(self, request, view, obj):

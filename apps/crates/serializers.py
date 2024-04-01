@@ -11,7 +11,7 @@ class CrateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crate
         fields = [
-            'id',
+            'slug',
             'name',
             'owner',
             'school',

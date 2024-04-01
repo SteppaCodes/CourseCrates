@@ -63,6 +63,11 @@ class OneTimePassword(models.Model):
         return self.code
 
 
-# class GuestUser(BaseModel):
-#     sesson_key = models.CharField(max_length=159)
+class GuestUser(BaseModel):
+    session_key = models.CharField(max_length=200)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.session_key}"
+
 

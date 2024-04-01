@@ -5,7 +5,8 @@ from apps.common.models import BaseModel
 from apps.crates.models import Crate
 from apps.schools.models import School
 from .customs import CustomGoogleDriveStorage
-from gdstorage.storage import GoogleDriveStorage
+
+from autoslug import AutoSlugField
 
 gd_storage = CustomGoogleDriveStorage()
 
@@ -21,7 +22,12 @@ FILE_CATEGORY_CHOICES = (
     ('Note', 'Note'),('TextBook', 'TextBook'),('PQ & A', 'PQ & A')
 )
 
+
+def slugify_name(self):
+    return f"{self.name}"
+
 class Material(BaseModel):
+    slug = AutoSlugField(unique=True, populate_from=slugify_name, always_update=True, null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=150)
     file = models.FileField(upload_to='materials/', storage=gd_storage)

@@ -9,11 +9,16 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiExample
 #local imports
-from .serializers import (RegisterSerializer, 
-                          VerifyOtpSerializer, ResendOtpSerializer,
-                          LoginSerializer, UserSerializer, LogoutSerializer,
-                          ResetPasswordSerializer, SetNewPasswordSerializer
-                          )
+from .serializers import (
+                        RegisterSerializer, 
+                        VerifyOtpSerializer, 
+                        ResendOtpSerializer,
+                        LoginSerializer, 
+                        UserSerializer, 
+                        LogoutSerializer,
+                        ResetPasswordSerializer, 
+                        SetNewPasswordSerializer
+                    )
 from .email import SendMail
 from . models import OneTimePassword, User
 
@@ -181,7 +186,6 @@ class ResetPasswordConfirm(APIView):
         
 class SetNewPassswordView(APIView):
     serializer_class = SetNewPasswordSerializer
-
 
     @extend_schema(
             summary = "Reset Password",

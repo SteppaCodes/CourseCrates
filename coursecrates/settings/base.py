@@ -92,8 +92,7 @@ SPECTACULAR_SETTINGS = {
     ],
     "TAGS": [
        {"name": "Auth", "description": "Authentication Endpoints"},
-       {"name": "Accounts Settings", "description": "Profile and accounts operations endpoints"},
-       {"name": "Accounts Settings", "description": "Profile and accounts operations endpoints"},
+       {"name": "Profiles", "description": "Profile and accounts operations endpoints"},
        {"name": "Crates", "description": "Crate CRUD dnpoints"},
        {"name": "Course Materials", "description": "Course CRUD endpoints"},
     #     {"name": "Groups", "description": "Groups CRUD endpoints"},

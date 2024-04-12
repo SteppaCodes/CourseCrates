@@ -16,12 +16,15 @@ LEVEL_CHOICES = (
     ('400', '400'), ('500', '500'), ('Other', 'Other')
 )
 
+def slugify_display_name(self):
+    return f"{self.display_name}"
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(default=uuid.uuid4(), unique=True, primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    display_name =  models.CharField(max_length=70)
+    display_name =  models.CharField(max_length=70, unique=True)
+    slug = AutoSlugField(populate_from=slugify_display_name, always_update=True, unique=True,null=True, blank=True)
     email = models.EmailField(_('Email Address'), unique=True)
     avatar= models.ImageField(upload_to='avatars/', null=True, blank=True)
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)

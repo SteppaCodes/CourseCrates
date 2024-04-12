@@ -1,17 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
+from rest_framework import status
 
 from .serializers import (
-    CompleteProfileSerializer
+    CompleteProfileSerializer,
+    UserInfoSerializer
     )
 from apps.schools.models import School
 from apps.accounts.models import User
 
-tags = ["Accounts Settings"]
+
+tags = ["Profiles"]
+
 
 class CompleteProfileView(APIView):
     serializer_class = CompleteProfileSerializer
@@ -36,3 +40,21 @@ class CompleteProfileView(APIView):
         return Response(serializer.data)
 
 
+class UserProfileAPIView(APIView):
+    serializer_class = UserInfoSerializer
+
+    @extend_schema(
+            tags=tags,
+            summary= 'User Profile',
+            description="""
+                This endpoint returns the user's profile - full name, display name,
+                avatar, email, number of crates, number of subscribers, number of users subscribed to
+            """
+    )
+    def get(self, request, slug):
+        try:
+            user = User.objects.prefetch_related("user_crates").get(slug=slug)
+            serializer = UserInfoSerializer(user)
+            return Response({"data": serializer.data})
+        except User.DoesNotExist:
+            return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)

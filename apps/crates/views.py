@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 
-from .serializers import CrateSerializer
+from .serializers import CrateDetailSerializer, CreateCrateSerializer
 from .models import Crate
 from utils.permissions import IsProfileComplete
 from apps.schools.models import School
@@ -21,7 +21,8 @@ from apps.accounts.models import GuestUser
 tags=["Crates"]
 
 class CratesListCreateAPIView(APIView, PageNumberPagination):
-    serializer_class = CrateSerializer
+    serializer_class = CrateDetailSerializer
+    post_serializer = CreateCrateSerializer
     permission_classes = [IsProfileComplete]
     user = None
 
@@ -41,8 +42,8 @@ class CratesListCreateAPIView(APIView, PageNumberPagination):
             ),
         ],
         responses={
-            200: CrateSerializer(many=True),
-            401: CrateSerializer,
+            200: CrateDetailSerializer(many=True),
+            401: CrateDetailSerializer,
         },
     )
     def get(self, request):
@@ -67,8 +68,8 @@ class CratesListCreateAPIView(APIView, PageNumberPagination):
         description="""
                 This endpoint creates a new crate associated with the authenticated user's school.
             """,
-        request=CrateSerializer,
-        responses={201: CrateSerializer},
+        request=CreateCrateSerializer,
+        responses={201: CreateCrateSerializer},
         examples=[
             OpenApiExample(
                 name="Create Crate Example",
@@ -80,7 +81,7 @@ class CratesListCreateAPIView(APIView, PageNumberPagination):
         ],
     )
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.post_serializer(data=request.data)
         user = request.user
         if serializer.is_valid():
             serializer.save(owner=user, school=user.school)
@@ -95,7 +96,7 @@ class CratesListCreateAPIView(APIView, PageNumberPagination):
 
 
 class CrateDetailView(APIView):
-    serializer_class = CrateSerializer
+    serializer_class = CrateDetailSerializer
 
     @extend_schema (
         tags=tags,
@@ -111,9 +112,11 @@ class CrateDetailView(APIView):
         """,
     )
     def get(self, request, slug, school_id=None):
-        crate = Crate.objects.prefetch_related("crate_materials").get(slug=slug)
-        materials = crate.crate_materials
-
+        try:
+            crate = Crate.objects.prefetch_related("crate_materials").get(slug=slug)
+        except Crate.DoesNotExist:
+            return Response({"error":"Crate not found"})
+        
         if school_id:
             id =  force_str(urlsafe_base64_decode(school_id))
             if not request.user.is_authenticated:
@@ -122,7 +125,7 @@ class CrateDetailView(APIView):
                 user, created = GuestUser.objects.get_or_create(session_key=session_key, school = school)
                  
         serializer = self.serializer_class(crate)
-        return Response({"Data":serializer.data})
+        return Response({"data":serializer.data})
     
     @extend_schema(
             tags=tags,

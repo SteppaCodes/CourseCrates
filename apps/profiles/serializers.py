@@ -6,6 +6,7 @@ import requests
 from apps.accounts.models import User
 from apps.schools.serializers import SchoolSerializer
 from apps.schools.models import School
+from apps.crates.serializers import CrateDetailSerializer
 
 
 class CompleteProfileSerializer(serializers.ModelSerializer):
@@ -39,15 +40,17 @@ class CompleteProfileSerializer(serializers.ModelSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     crates_count = serializers.SerializerMethodField(read_only=True)
+    user_crates = CrateDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
         fields = [
             'full_name',
-            'username',
+            'display_name',
             'email',
             'avatar',
             'crates_count',
+            'user_crates'
         ]
 
     def get_crates_count(self, obj) -> int:
